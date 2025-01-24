@@ -3,23 +3,27 @@ from enum import IntEnum
 
 import pygame
 
+import game.scenes.Game
 import system.Display
 
 
 class InstanceState(IntEnum):
     none = 0
-    # add more states like title-screen, menu, game and game-over
+    game = 1
 
 
 class Instance:
     def __init__(self):
         pygame.init()
-        self.display = system.Display(1280, 720, "pygame Template")
+        self.display = system.Display(1280, 720, "GGJ2025-ŁGJ9")
         self.display.set_icon("assets/sprites/WIP32x32.png")
         self.display.frames = 60
+
         self.actualState = InstanceState.none
         self.previousState = InstanceState.none
+
         self.scenes = []
+        self.scenes.append(game.scenes.Game(self.display))
         '''
         load scenes like:
         self.scenes.append(Scene("tag", self.display))
@@ -42,16 +46,29 @@ class Instance:
 
             self.display.clear()
 
-            if self.actualState == InstanceState.none:
-                '''
-                # scene process input like:
-                scene.process_input(pygame.key.get_pressed(), pygame.joystick.Joystick, pygame.mouse.get_pressed(), pygame.mouse.get_pos())
-                # scene update
-                scene.update()
-                # scene(s) render
-                scene.render()
-                '''
-                pass
+            actual_scene = None
+            if self.actualState != InstanceState.none:
+                actual_scene = self.scenes[self.actualState - 1]
+
+            match self.actualState:
+                case InstanceState.none:
+                    self.update_instance_states(InstanceState.game)
+                case InstanceState.game:
+                    actual_scene.process_input(pygame.key.get_pressed(), pygame.joystick.Joystick,
+                                               pygame.mouse.get_pressed(), pygame.mouse.get_pos())
+                    game_val = actual_scene.update()
+                    match game_val:
+                        case _:
+                            pass
+                    actual_scene.render()
+                    '''
+                    # scene process input like:
+                    scene.process_input(pygame.key.get_pressed(), pygame.joystick.Joystick, pygame.mouse.get_pressed(), pygame.mouse.get_pos())
+                    # scene update
+                    scene.update()
+                    # scene(s) render
+                    scene.render()
+                    '''
 
             self.display.display_and_wait()
             await asyncio.sleep(0)
