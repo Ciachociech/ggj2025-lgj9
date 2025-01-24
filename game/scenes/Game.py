@@ -23,7 +23,9 @@ class Game(common.Scene):
 
     def update(self):
         for bubble in self.bubbles:
-           bubble.update()
+            bubble.update()
+            if bubble.prepare_to_delete:
+                self.bubbles.remove(bubble)
         if len(self.bubbles) < 300:
             new_bubble = game.objects.Bubble(random.randint(1, 5), random.randint(0, 359),
                                              self.bubble_image)
@@ -32,4 +34,6 @@ class Game(common.Scene):
     def render(self, color=pygame.Color(255, 255, 255, 255)):
         self.background.render(self.window.window)
         for bubble in self.bubbles:
-            bubble.render(self.window.window)
+            bubble_surface = pygame.transform.scale(self.bubble_image.image, (bubble.radius, bubble.radius))
+            position = (bubble.center[0] - bubble.radius / 2, bubble.center[1] - bubble.radius / 2)
+            self.window.window.blit(bubble_surface, position)
