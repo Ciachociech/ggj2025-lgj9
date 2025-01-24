@@ -6,5 +6,5 @@ class Background(common.Object):
         super().__init__("BackgroundObject", "assets/sprites/background.png")
         self.position = (0, 0)
 
-    def render(self, window, position = (0, 0)):
-        super().render(window, position)
+    def render(self, window, movement_position = (0, 0)):
+        super().render(window, self.position + movement_position)

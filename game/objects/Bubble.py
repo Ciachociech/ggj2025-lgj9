@@ -20,6 +20,7 @@ class Bubble(common.Object):
         self.center = (640, 360)
         self.velocity = velocity
         self.angle = math.radians(angle)
+        self.rect = pygame.Rect(640, 360, 0, 0)
 
         self.radius = 0
         self.prepare_to_delete = False
@@ -31,7 +32,7 @@ class Bubble(common.Object):
         self.center = (self.center[0] + self.velocity * math.cos(self.angle),
                        self.center[1] + self.velocity * math.sin(self.angle))
 
-        area_rect = pygame.Rect(0, 0, 1280, 720)
+        self.rect = pygame.Rect(self.center[0], self.center[1], self.radius, self.radius)
         if not check_containing(self):
             self.prepare_to_delete = True
 
