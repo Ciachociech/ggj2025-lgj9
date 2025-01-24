@@ -28,8 +28,12 @@ class Game(common.Scene):
         self.bubble_image = drawable.Image("bubble_image", "assets/sprites/bubble.png")
         self.bubbles = []
 
+        pygame.mouse.set_visible(False)
+        self.cursor_image = drawable.Image("cursor_image", "assets/sprites/chicken.png")
+        self.cursor_image_rect = self.cursor_image.image.get_rect()
+
     def process_input(self, keyboard_input, joystick, mouse_input, mouse_position):
-        pass
+        self.cursor_image_rect.center = pygame.mouse.get_pos()
 
     def update(self):
         for it in range (0, len(self.bubbles) - 1):
@@ -53,3 +57,5 @@ class Game(common.Scene):
             bubble_surface = pygame.transform.scale(self.bubble_image.image, (bubble.radius, bubble.radius))
             position = (bubble.center[0] - bubble.radius / 2, bubble.center[1] - bubble.radius / 2)
             self.window.window.blit(bubble_surface, position)
+
+        self.window.window.blit(self.cursor_image.image, self.cursor_image_rect)
