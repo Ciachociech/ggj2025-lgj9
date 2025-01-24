@@ -1,8 +1,9 @@
 import pygame
 
 import audio.Sound
-import common.Object
 import common.Scene
+import game.objects.Background
+import game.objects.Bubble
 
 
 class Game(common.Scene):
@@ -10,9 +11,8 @@ class Game(common.Scene):
     def __init__(self, window):
         super().__init__("GameMainScene", window)
 
-        self.background = None
-        self.bubble_texture = common.Object("bubble", "assets/sprites/PLACEHOLDER_bubble.png")
-        self.position = (640, 360)
+        self.background = game.objects.Background()
+        self.bubble = game.objects.Bubble()
 
     def process_input(self, keyboard_input, joystick, mouse_input, mouse_position):
         pass
@@ -21,4 +21,5 @@ class Game(common.Scene):
         return None
 
     def render(self, color=pygame.Color(255, 255, 255, 255)):
-        self.bubble_texture.render(self.window.window, self.position)
+        self.background.render(self.window.window)
+        self.bubble.render(self.window.window)
