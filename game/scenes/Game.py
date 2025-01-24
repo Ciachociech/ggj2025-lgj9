@@ -18,7 +18,7 @@ class Game(common.Scene):
         pass
 
     def update(self):
-        return None
+        self.bubble.update()
 
     def render(self, color=pygame.Color(255, 255, 255, 255)):
         self.background.render(self.window.window)
