@@ -6,3 +6,6 @@ Suggested IDE: JetBrains PyCharm
 
 It is preferred to copy whole project to new directory and start with editing.
 Needed to be tested for some game jam
+
+Use pyinstaller (example):
+C:\Users\[user name]\AppData\Local\Programs\Python\Python312\Scripts\pyinstaller.exe --noconfirm --onedir --windowed main.py
