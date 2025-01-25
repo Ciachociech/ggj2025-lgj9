@@ -12,7 +12,7 @@ class Gameover(common.Scene):
         super().__init__("GameoverScene", window)
         self.button = game.objects.Button((480, 600), "do menu")
 
-        self.cursor_image = drawable.Image("mainmenu-cursor", "assets/sprites/kursorUFO.png")
+        self.cursor_image = drawable.Image("mainmenu-cursor", "assets/cursors/kursorUFO.ico")
         self.cursor_image_rect = self.cursor_image.image.get_rect()
         self.is_left_mouse_clicked = None
 

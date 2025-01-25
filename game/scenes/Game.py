@@ -187,8 +187,8 @@ class Game(common.Scene):
         for it in range (0, len(self.animals)):
             if self.animals[it].rect.collidepoint(pygame.mouse.get_pos()) and self.is_left_mouse_clicked:
                 self.animal_chosen = it
-                self.cursor_image = self.animals[it].img
-                self.cursor_image_rect = self.cursor_image.image.get_rect()
+                self.cursor_image = pygame.image.load(self.animals[it].cursor_path)
+                self.cursor_image_rect = self.cursor_image.get_rect()
 
         # increment other variables
         self.frames_per_beginning += 1
@@ -242,7 +242,7 @@ class Game(common.Scene):
                 self.animals[it].render(self.window.window)
 
         if self.animal_chosen != -1:
-            self.window.window.blit(self.cursor_image.image, self.cursor_image_rect)
+            self.window.window.blit(self.cursor_image, self.cursor_image_rect)
         self.font.render_text(self.window.window, self.score_text + str(self.score), pygame.Color(255, 255, 255, 255), (8, 8))
         if (self.game_mode is GameMode.time_limit or self.game_mode is GameMode.mixed_limit) and self.timer.elapsed_time / 1000 < self.time_limit:
             self.font.render_text(self.window.window,

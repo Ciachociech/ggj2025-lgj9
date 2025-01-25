@@ -18,7 +18,7 @@ class MainMenu(common.Scene):
         self.buttons.append(game.objects.Button((480, 500), "wyzwanie"))
         self.buttons.append(game.objects.Button((480, 600), "wyjście"))
 
-        self.cursor_image = drawable.Image("mainmenu-cursor", "assets/sprites/kursorUFO.png")
+        self.cursor_image = drawable.Image("mainmenu-cursor", "assets/cursors/kursorUFO.ico")
         self.cursor_image_rect = self.cursor_image.image.get_rect()
         self.is_left_mouse_clicked = None
         self.mouse_click_cooldown = 0

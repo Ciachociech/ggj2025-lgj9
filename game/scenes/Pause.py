@@ -17,7 +17,7 @@ class Pause(common.Scene):
         self.keyboard_click_cooldown = None
         self.escape_key_pressed = None
 
-        self.cursor_image = drawable.Image("pause-cursor", "assets/sprites/kursorUFO.png")
+        self.cursor_image = drawable.Image("pause-cursor", "assets/cursors/kursorUFO.ico")
         self.cursor_image_rect = self.cursor_image.image.get_rect()
         self.is_left_mouse_clicked = None
 
