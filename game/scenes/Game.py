@@ -88,8 +88,8 @@ class Game(common.Scene):
             if pygame.Rect(bubble.center[0] - bubble.radius, bubble.center[1] - bubble.radius, 2 * bubble.radius, 2 * bubble.radius).collidepoint(self.cursor_image_rect.center):
                 if bubble.radius > 2 * self.animals[0].size / math.sqrt(2):
                     bubble.is_bubble_hovered = True
-                    if self.is_left_mouse_clicked:
-                        self.animals = self.animals[1:]
+                    if self.is_left_mouse_clicked and self.animal_chosen != -1:
+                        del self.animals[self.animal_chosen]
                         self.score += 1
                         self.animal_chosen = -1
                         for animal in self.animals:
@@ -123,11 +123,13 @@ class Game(common.Scene):
         self.background.render(self.window.window)
         self.ufo.render(self.window.window)
         for bubble in self.bubbles:
-            if bubble.is_bubble_hovered:
-                bubble_surface = pygame.transform.scale(self.hovered_bubble_image.image, (bubble.radius, bubble.radius))
+            position = None
+            if bubble.is_bubble_hovered and self.animal_chosen != -1:
+                bubble_surface = pygame.transform.scale(self.hovered_bubble_image.image, (1.2 * bubble.radius, 1.2 * bubble.radius))
+                position = (bubble.center[0] - 0.6 * bubble.radius, bubble.center[1] - 0.6 * bubble.radius)
             else:
                 bubble_surface = pygame.transform.scale(self.bubble_image.image, (bubble.radius, bubble.radius))
-            position = (bubble.center[0] - bubble.radius / 2, bubble.center[1] - bubble.radius / 2)
+                position = (bubble.center[0] - bubble.radius / 2, bubble.center[1] - bubble.radius / 2)
             self.window.window.blit(bubble_surface, position)
 
         for it in range (0, len(self.animals)):
