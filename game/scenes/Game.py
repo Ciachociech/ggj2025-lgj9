@@ -100,6 +100,7 @@ class Game(common.Scene):
                         self.score += int(self.animals[self.animal_chosen].size / 8)
                         bubble.captured_animal_image = self.animals[self.animal_chosen].img.image
                         bubble.change_movement_when_capture()
+                        bubble.prepare_to_delete = False
 
                         del self.animals[self.animal_chosen]
                         self.animal_chosen = -1
