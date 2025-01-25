@@ -8,13 +8,13 @@ class Animal(common.Object):
     def __init__(self, tag, size, image, x_pos):
         super().__init__(tag, image)
         self.size = size
-        self.position = (x_pos, 592)
+        self.rect = pygame.Rect(x_pos, 592, 128, 128)
 
-    def update(self):
-        self.position = (self.position[0] - 128, self.position[1])
+    def update_position(self):
+        self.rect = pygame.Rect(self.rect[0] - 128, self.rect[1], self.rect[2], self.rect[3])
 
     def render(self, window, position = (0, 0)):
-        super().render(window, self.position + position)
+        super().render(window, (self.rect[0], self.rect[1]) + position)
 
 
 class Cow(Animal):

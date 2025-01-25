@@ -41,7 +41,7 @@ class Game(common.Scene):
         self.score_text = "Wynik:"
 
         self.is_mouse_clicked = False
-        self.is_animal_chosen = -1
+        self.animal_chosen = -1
         self.mouse_click_cooldown = 0
         self.cursor_image = None
         self.cursor_image_rect = pygame.Rect(0, 0, 0, 0)
@@ -53,6 +53,7 @@ class Game(common.Scene):
             self.is_mouse_clicked = mouse_input[0]
 
     def update(self):
+        # if less than 10 animals, spawn to fill this limit
         while len(self.animals) < 10:
             match random.randint(1, 5):
                 case 1:
@@ -68,17 +69,20 @@ class Game(common.Scene):
                 case _:
                     pass
 
-        if self.is_animal_chosen != -1:
+        # set cursor when any animal is chosen
+        if self.animal_chosen != -1:
             pygame.mouse.set_visible(False)
             self.cursor_image = self.animals[0].img
             self.cursor_image_rect = self.cursor_image.image.get_rect()
         else:
             pygame.mouse.set_visible(True)
 
-
+        # check collision
         for it in range (0, len(self.bubbles) - 1):
             for jt in range(it + 1, len(self.bubbles)):
                 resolve_collision(self.bubbles[it], self.bubbles[jt])
+
+        # manage bubbles
         for bubble in self.bubbles:
             bubble.update()
             if pygame.Rect(bubble.center[0] - bubble.radius, bubble.center[1] - bubble.radius, 2 * bubble.radius, 2 * bubble.radius).collidepoint(self.cursor_image_rect.center):
@@ -88,19 +92,24 @@ class Game(common.Scene):
                         self.animals = self.animals[1:]
                         self.score += 1
                         for animal in self.animals:
-                            animal.update()
+                            animal.update_position()
                 if self.is_mouse_clicked:
                     bubble.prepare_to_delete = True
                     self.is_mouse_clicked = False
                     self.mouse_click_cooldown = 0
             if bubble.prepare_to_delete:
                 self.bubbles.remove(bubble)
-
         if len(self.bubbles) < 300:
             new_bubble = game.objects.Bubble(random.randint(0, 359), random.randint(1, 5), random.randint(0, 359),
                                              self.bubble_image)
             self.bubbles.append(new_bubble)
 
+        # manage animals
+        for it in range (1, len(self.animals)):
+            if self.animals[it].rect.collidepoint(self.cursor_image_rect.center) and self.is_mouse_clicked:
+                self.animal_chosen = it
+
+        # increment other variables
         self.frames_per_beginning += 1
         self.mouse_click_cooldown += 1
 
@@ -117,9 +126,9 @@ class Game(common.Scene):
             self.window.window.blit(bubble_surface, position)
 
         for it in range (0, len(self.animals)):
-            if self.is_animal_chosen != it:
+            if self.animal_chosen != it:
                 self.animals[it].render(self.window.window)
 
-        if self.is_animal_chosen != -1:
+        if self.animal_chosen != -1:
             self.window.window.blit(self.cursor_image.image, self.cursor_image_rect)
         self.font.render_text(self.window.window, self.score_text + str(self.score), pygame.Color(255, 255, 255, 255), (100, 50))
