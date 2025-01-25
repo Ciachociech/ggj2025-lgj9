@@ -5,6 +5,8 @@ import pygame
 
 import common.Object
 
+bubble_start_distance = 48
+
 def check_containing(bubble):
     area_rect = pygame.Rect(0, 0, 1280, 720)
     check_result = area_rect[0] < bubble.center[0] - bubble.radius / 2
@@ -15,12 +17,13 @@ def check_containing(bubble):
 
 class Bubble(common.Object):
 
-    def __init__(self, velocity, angle, image):
+    def __init__(self, pos_angle, velocity, vel_angle, image):
         super().__init__("BubbleObject", image)
-        self.center = (640, 360)
+        self.center = (640 + bubble_start_distance * math.cos(math.radians(pos_angle)),
+                       360 + bubble_start_distance * math.sin(math.radians(pos_angle)))
         self.velocity = velocity
-        self.angle = math.radians(angle)
-        self.rect = pygame.Rect(640, 360, 0, 0)
+        self.angle = math.radians(vel_angle)
+        self.rect = pygame.Rect(self.center[0], self.center[1], 0, 0)
 
         self.radius = 0
         self.prepare_to_delete = False

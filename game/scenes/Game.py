@@ -78,7 +78,7 @@ class Game(common.Scene):
                 self.bubbles.remove(bubble)
 
         if len(self.bubbles) < 300:
-            new_bubble = game.objects.Bubble(random.randint(1, 5), random.randint(0, 359),
+            new_bubble = game.objects.Bubble(random.randint(0, 359), random.randint(1, 5), random.randint(0, 359),
                                              self.bubble_image)
             self.bubbles.append(new_bubble)
 
