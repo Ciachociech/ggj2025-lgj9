@@ -32,21 +32,14 @@ class Bubble(common.Object):
         self.update()
 
     def update(self):
+        self.is_bubble_hovered = False
         self.radius += 1
         self.center = (self.center[0] + self.velocity * math.cos(self.angle),
                        self.center[1] + self.velocity * math.sin(self.angle))
-        self.is_bubble_hovered = False
 
         self.rect = pygame.Rect(self.center[0], self.center[1], self.radius, self.radius)
         if not check_containing(self):
             self.prepare_to_delete = True
 
     def render(self, window, position_translation = (0, 0)):
-        image = pygame.transform.scale(self.img.image, (self.radius, self.radius))
-        image = pygame.Surface(image.get_size()).convert_alpha()
-        position = (self.center[0] - self.radius / 2, self.center[1] - self.radius / 2)
-        if self.is_bubble_hovered:
-            image.fill(pygame.Color(0, 255, 0, 255))
-        else:
-            image.fill(pygame.Color(255, 0, 0, 255))
-        window.blit(image, position + position_translation, special_flags=pygame.BLEND_RGBA_MULT)
+        pass

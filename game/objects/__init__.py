@@ -3,6 +3,7 @@ from .Animal import Chicken
 from .Animal import Cow
 from .Animal import Deer
 from .Animal import Fox
+from .Animal import Rabbit
 from .Background import Background
 from .Bubble import Bubble
 from .Ufo import Ufo

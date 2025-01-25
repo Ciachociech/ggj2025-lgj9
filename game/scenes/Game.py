@@ -31,6 +31,7 @@ class Game(common.Scene):
         self.background = game.objects.Background()
         self.ufo = game.objects.Ufo()
         self.bubble_image = drawable.Image("bubble_image", "assets/sprites/bubble.png")
+        self.hovered_bubble_image = drawable.Image("bubble_image", "assets/sprites/h_bubble.png")
         self.bubbles = []
         self.animals = []
 
@@ -52,7 +53,7 @@ class Game(common.Scene):
 
     def update(self):
         while len(self.animals) < 5:
-            match random.randint(1, 4):
+            match random.randint(1, 5):
                 case 1:
                     self.animals.append(game.objects.Cow())
                 case 2:
@@ -61,6 +62,8 @@ class Game(common.Scene):
                     self.animals.append(game.objects.Fox())
                 case 4:
                     self.animals.append(game.objects.Deer())
+                case 5:
+                    self.animals.append(game.objects.Rabbit(random.randint(0, 99)))
                 case _:
                     pass
             if len(self.animals) == 5:
@@ -97,7 +100,10 @@ class Game(common.Scene):
         self.background.render(self.window.window)
         self.ufo.render(self.window.window)
         for bubble in self.bubbles:
-            bubble_surface = pygame.transform.scale(self.bubble_image.image, (bubble.radius, bubble.radius))
+            if bubble.is_bubble_hovered:
+                bubble_surface = pygame.transform.scale(self.hovered_bubble_image.image, (bubble.radius, bubble.radius))
+            else:
+                bubble_surface = pygame.transform.scale(self.bubble_image.image, (bubble.radius, bubble.radius))
             position = (bubble.center[0] - bubble.radius / 2, bubble.center[1] - bubble.radius / 2)
             self.window.window.blit(bubble_surface, position)
 
