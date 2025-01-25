@@ -32,6 +32,10 @@ class Game(common.Scene):
         self.bubbles = []
         self.animals = []
 
+        self.font = drawable.Font("GameFont")
+        self.font.load_font_from_file("assets/fonts/NerkoOne-Regular.ttf", 48)
+        self.score_text = "Wynik:"
+
         pygame.mouse.set_visible(False)
         self.is_mouse_clicked = False
         self.cursor_image = None
@@ -84,3 +88,4 @@ class Game(common.Scene):
             self.window.window.blit(bubble_surface, position)
 
         self.window.window.blit(self.cursor_image.image, self.cursor_image_rect)
+        self.font.render_text(self.window.window, self.score_text + str(self.score), pygame.Color(255, 255, 255, 255), (100, 50))
