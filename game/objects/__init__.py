@@ -7,4 +7,5 @@ from .Animal import Rabbit
 from .Animal import Zubr
 from .Background import Background
 from .Bubble import Bubble
+from .Button import Button
 from .Ufo import Ufo

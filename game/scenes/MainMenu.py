@@ -2,6 +2,7 @@ import pygame
 
 import common.Scene
 import game.objects.Background
+import game.objects.Button
 
 
 class MainMenu(common.Scene):
@@ -10,6 +11,12 @@ class MainMenu(common.Scene):
         super().__init__("PauseScene", window)
 
         self.background = game.objects.Background("assets/sprites/menu.png")
+        self.buttons = []
+        self.buttons.append(game.objects.Button((480, 300), "bez limitu"))
+        self.buttons.append(game.objects.Button((480, 400), "na czas"))
+        self.buttons.append(game.objects.Button((480, 500), "wyzwanie"))
+        self.buttons.append(game.objects.Button((480, 600), "wyjście"))
+
         self.resume()
 
     def resume(self):
@@ -23,8 +30,5 @@ class MainMenu(common.Scene):
 
     def render(self, color = pygame.Color(255, 255, 255, 255)):
         self.background.render(self.window.window)
-
-        pygame.draw.rect(self.window.window, pygame.Color(128, 128, 128, 255), pygame.Rect(480, 300, 320, 80))
-        pygame.draw.rect(self.window.window, pygame.Color(128, 128, 128, 255), pygame.Rect(480, 400, 320, 80))
-        pygame.draw.rect(self.window.window, pygame.Color(128, 128, 128, 255), pygame.Rect(480, 500, 320, 80))
-        pygame.draw.rect(self.window.window, pygame.Color(128, 128, 128, 255), pygame.Rect(480, 600, 320, 80))
+        for button in self.buttons:
+            button.render(self.window.window)

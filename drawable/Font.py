@@ -16,4 +16,4 @@ class Font:
         text_surface = self.font.render(text, True, color)
         text_rect = text_surface.get_rect()
         setattr(text_rect, anchor, position)
-        window.blit(text_surface, position)
+        window.blit(text_surface, text_rect)

@@ -18,7 +18,7 @@ class Instance:
     def __init__(self):
         pygame.init()
         self.display = system.Display(1280, 720, "GGJ2025-ŁGJ9")
-        self.display.set_icon("assets/sprites/WIP32x32.png")
+        self.display.set_icon("assets/sprites/logo.png")
         self.display.frames = 60
 
         self.actualState = InstanceState.none
