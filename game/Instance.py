@@ -106,12 +106,16 @@ class Instance:
                                                pygame.mouse.get_pressed(), pygame.mouse.get_pos())
                     game_val = actual_scene.update()
                     match game_val:
-                        case 1:
+                        case 0:
                             self.update_instance_states(InstanceState.game)
+                            self.scenes[self.actualState - 1].resume()
+                        case 1:
+                            self.update_instance_states(InstanceState.mainmenu)
                             self.scenes[self.actualState - 1].resume()
                         case _:
                             pass
-                    previous_scene.render()
+                    if self.previousState is InstanceState.game:
+                        previous_scene.render()
                     actual_scene.render()
                 case InstanceState.gameover:
                     actual_scene.process_input(pygame.key.get_pressed(), pygame.joystick.Joystick,

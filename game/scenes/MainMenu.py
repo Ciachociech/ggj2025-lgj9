@@ -21,6 +21,7 @@ class MainMenu(common.Scene):
         self.cursor_image = drawable.Image("mainmenu-cursor", "assets/sprites/kursorUFO.png")
         self.cursor_image_rect = self.cursor_image.image.get_rect()
         self.is_left_mouse_clicked = None
+        self.mouse_click_cooldown = 0
 
         self.title_font = drawable.Font("MainMenuTitleFont")
         self.title_font.load_font_from_file("assets/fonts/Tektur-Regular.ttf", 64)
@@ -34,12 +35,16 @@ class MainMenu(common.Scene):
     def resume(self):
         pygame.mouse.set_visible(False)
         self.is_left_mouse_clicked = False
+        self.mouse_click_cooldown = 0
 
     def process_input(self, keyboard_input, joystick, mouse_input, mouse_position):
         self.cursor_image_rect.center = pygame.mouse.get_pos()
-        self.is_left_mouse_clicked = mouse_input[0]
+        if self.mouse_click_cooldown > 6:
+            self.is_left_mouse_clicked = mouse_input[0]
 
     def update(self):
+        self.mouse_click_cooldown += 1
+
         for it in range(0, len(self.buttons)):
             self.buttons[it].update()
             if self.buttons[it].rect.collidepoint(self.cursor_image_rect.center):
