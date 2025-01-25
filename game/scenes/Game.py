@@ -35,6 +35,7 @@ class Game(common.Scene):
         self.ufo = game.objects.Ufo()
         self.bubble_image = drawable.Image("bubble_image", "assets/sprites/bubble.png")
         self.hovered_bubble_image = drawable.Image("bubble_image", "assets/sprites/h_bubble.png")
+        self.bubble_boom_tileset = drawable.Image("BoomTilesetImage", "assets/tilesets/bubbleboom.png")
         self.bubbles = []
         self.animals = []
 
@@ -106,6 +107,8 @@ class Game(common.Scene):
         # manage bubbles
         for bubble in self.bubbles:
             bubble.update()
+            if bubble.prepare_to_delete and bubble.boom_animation_frames < bubble.bubble_boom_frames_limit:
+                continue
             if bubble.captured_animal_image is not None:
                 continue
             if pygame.Rect(bubble.center[0] - bubble.radius, bubble.center[1] - bubble.radius, 2 * bubble.radius, 2 * bubble.radius).collidepoint(self.cursor_image_rect.center):
@@ -125,7 +128,7 @@ class Game(common.Scene):
                     bubble.prepare_to_delete = True
                     self.is_left_mouse_clicked = False
                     self.mouse_click_cooldown = 0
-            if bubble.prepare_to_delete:
+            if bubble.prepare_to_delete and bubble.boom_animation_frames >= bubble.bubble_boom_frames_limit:
                 self.bubbles.remove(bubble)
         if len(self.bubbles) < 300:
             new_bubble = game.objects.Bubble(random.randint(0, 359), random.randint(1, 5), random.randint(0, 359),
@@ -154,16 +157,27 @@ class Game(common.Scene):
         self.ufo.render(self.window.window)
         for bubble in self.bubbles:
             position = None
-            if bubble.is_bubble_hovered and self.animal_chosen != -1 and not bubble.captured_animal_image:
-                bubble_surface = pygame.transform.scale(self.hovered_bubble_image.image, (1.2 * bubble.radius, 1.2 * bubble.radius))
-                position = (bubble.center[0] - 0.6 * bubble.radius, bubble.center[1] - 0.6 * bubble.radius)
-            else:
-                bubble_surface = pygame.transform.scale(self.bubble_image.image, (bubble.radius, bubble.radius))
-                position = (bubble.center[0] - bubble.radius / 2, bubble.center[1] - bubble.radius / 2)
             if bubble.captured_animal_image:
                 self.window.window.blit(bubble.captured_animal_image,
                                         (bubble.center[0] - 64, bubble.center[1] - 64))
-            self.window.window.blit(bubble_surface, position)
+            if bubble.is_bubble_hovered and self.animal_chosen != -1 and not bubble.captured_animal_image:
+                bubble_surface = pygame.transform.scale(self.hovered_bubble_image.image,
+                                                        (1.2 * bubble.radius, 1.2 * bubble.radius))
+                position = (bubble.center[0] - 0.6 * bubble.radius, bubble.center[1] - 0.6 * bubble.radius)
+                self.window.window.blit(bubble_surface, position)
+            elif bubble.prepare_to_delete:
+                bubble_surface = pygame.transform.scale(self.bubble_boom_tileset.image,
+                                                        (4 * bubble.radius, bubble.radius))
+                position = (bubble.center[0] - bubble.radius / 2, bubble.center[1] - bubble.radius / 2)
+
+                rect = (bubble.radius * (bubble.boom_animation_frames // (bubble.bubble_boom_frames_limit // 4)), 0, bubble.radius, bubble.radius)
+                self.window.window.blit(bubble_surface, position, rect)
+            else:
+                bubble_surface = pygame.transform.scale(self.bubble_image.image,
+                                                        (bubble.radius, bubble.radius))
+                position = (bubble.center[0] - bubble.radius / 2, bubble.center[1] - bubble.radius / 2)
+                self.window.window.blit(bubble_surface, position)
+
 
         for it in range (0, len(self.animals)):
             if self.animal_chosen != it:

@@ -31,12 +31,19 @@ class Bubble(common.Object):
 
         self.radius = 0
         self.prepare_to_delete = False
+        self.boom_animation_frames = 0
+        self.bubble_boom_frames_limit = 12
+
         self.is_bubble_hovered = False
 
         self.captured_animal_image = None
         self.update()
 
     def update(self):
+        if self.prepare_to_delete:
+            self.boom_animation_frames += 1
+            return
+
         self.is_bubble_hovered = False
         if self.captured_animal_image is None:
             self.radius += 1
@@ -47,6 +54,8 @@ class Bubble(common.Object):
         self.rect = pygame.Rect(self.center[0], self.center[1], self.radius, self.radius)
         if not check_containing(self):
             self.prepare_to_delete = True
+            if self.captured_animal_image:
+                self.boom_animation_frames = self.bubble_boom_frames_limit
 
     def change_movement_when_capture(self):
         self.angle = math.radians(270)

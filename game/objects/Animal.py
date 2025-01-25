@@ -20,7 +20,7 @@ class Animal(common.Object):
 class Cow(Animal):
 
     def __init__(self, x_pos):
-        super().__init__("CowAnimalObject", 104, "assets/sprites/cow.png", x_pos)
+        super().__init__("CowAnimalObject", 96, "assets/sprites/cow.png", x_pos)
 
     def render(self, window, position = (0, 0)):
         super().render(window, position)
@@ -38,7 +38,7 @@ class Chicken(Animal):
 class Fox(Animal):
 
     def __init__(self, x_pos):
-        super().__init__("FoxAnimalObject", 64, "assets/sprites/fox.png", x_pos)
+        super().__init__("FoxAnimalObject", 56, "assets/sprites/fox.png", x_pos)
 
     def render(self, window, position = (0, 0)):
         super().render(window, position)
@@ -47,7 +47,7 @@ class Fox(Animal):
 class Deer(Animal):
 
     def __init__(self, x_pos):
-        super().__init__("DeerAnimalObject", 96, "assets/sprites/deer.png", x_pos)
+        super().__init__("DeerAnimalObject", 80, "assets/sprites/deer.png", x_pos)
 
     def render(self, window, position = (0, 0)):
         super().render(window, position)
