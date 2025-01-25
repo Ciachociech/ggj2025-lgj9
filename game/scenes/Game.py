@@ -20,6 +20,7 @@ def resolve_collision(bubble1, bubble2):
             bubble1.prepare_to_delete = True
             bubble2.prepare_to_delete = True
 
+
 class Game(common.Scene):
 
     def __init__(self, window):
@@ -39,11 +40,11 @@ class Game(common.Scene):
         self.font.load_font_from_file("assets/fonts/NerkoOne-Regular.ttf", 48)
         self.score_text = "Wynik:"
 
-        pygame.mouse.set_visible(False)
         self.is_mouse_clicked = False
+        self.is_animal_chosen = -1
         self.mouse_click_cooldown = 0
         self.cursor_image = None
-        self.cursor_image_rect = None
+        self.cursor_image_rect = pygame.Rect(0, 0, 0, 0)
         self.update()
 
     def process_input(self, keyboard_input, joystick, mouse_input, mouse_position):
@@ -55,20 +56,25 @@ class Game(common.Scene):
         while len(self.animals) < 5:
             match random.randint(1, 5):
                 case 1:
-                    self.animals.append(game.objects.Cow())
+                    self.animals.append(game.objects.Cow(128 * len(self.animals)))
                 case 2:
-                    self.animals.append(game.objects.Chicken())
+                    self.animals.append(game.objects.Chicken(128 * len(self.animals)))
                 case 3:
-                    self.animals.append(game.objects.Fox())
+                    self.animals.append(game.objects.Fox(128 * len(self.animals)))
                 case 4:
-                    self.animals.append(game.objects.Deer())
+                    self.animals.append(game.objects.Deer(128 * len(self.animals)))
                 case 5:
-                    self.animals.append(game.objects.Rabbit(random.randint(0, 99)))
+                    self.animals.append(game.objects.Rabbit(random.randint(0, 99), 128 * len(self.animals)))
                 case _:
                     pass
-            if len(self.animals) == 5:
-                self.cursor_image = self.animals[0].img
-                self.cursor_image_rect = self.cursor_image.image.get_rect()
+
+        if self.is_animal_chosen:
+            pygame.mouse.set_visible(False)
+            self.cursor_image = self.animals[0].img
+            self.cursor_image_rect = self.cursor_image.image.get_rect()
+        else:
+            pygame.mouse.set_visible(True)
+
 
         for it in range (0, len(self.bubbles) - 1):
             for jt in range(it + 1, len(self.bubbles)):
@@ -81,6 +87,8 @@ class Game(common.Scene):
                     if self.is_mouse_clicked:
                         self.animals = self.animals[1:]
                         self.score += 1
+                        for animal in self.animals:
+                            animal.update()
                 if self.is_mouse_clicked:
                     bubble.prepare_to_delete = True
                     self.is_mouse_clicked = False
@@ -96,6 +104,7 @@ class Game(common.Scene):
         self.frames_per_beginning += 1
         self.mouse_click_cooldown += 1
 
+
     def render(self, color=pygame.Color(255, 255, 255, 255)):
         self.background.render(self.window.window)
         self.ufo.render(self.window.window)
@@ -107,6 +116,10 @@ class Game(common.Scene):
             position = (bubble.center[0] - bubble.radius / 2, bubble.center[1] - bubble.radius / 2)
             self.window.window.blit(bubble_surface, position)
 
+        for it in range (0, len(self.animals)):
+            if self.is_animal_chosen != it:
+                self.animals[it].render(self.window.window)
 
-        self.window.window.blit(self.cursor_image.image, self.cursor_image_rect)
+        if self.is_animal_chosen != -1:
+            self.window.window.blit(self.cursor_image.image, self.cursor_image_rect)
         self.font.render_text(self.window.window, self.score_text + str(self.score), pygame.Color(255, 255, 255, 255), (100, 50))
