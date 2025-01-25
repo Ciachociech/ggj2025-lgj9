@@ -29,7 +29,7 @@ class Cow(Animal):
 class Chicken(Animal):
 
     def __init__(self, x_pos):
-        super().__init__("ChickenAnimalObject", 32, "assets/sprites/chicken.png", x_pos)
+        super().__init__("ChickenAnimalObject", 40, "assets/sprites/chicken.png", x_pos)
 
     def render(self, window, position = (0, 0)):
         super().render(window, position)

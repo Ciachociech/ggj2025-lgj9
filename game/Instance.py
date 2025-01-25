@@ -90,6 +90,14 @@ class Instance:
                         case 1:
                             self.update_instance_states(InstanceState.pause)
                             self.scenes[self.actualState - 1].resume()
+                        case 2:
+                            self.update_instance_states(InstanceState.pause)
+                            self.scenes[self.actualState - 1].resume()
+                        case 3:
+                            pygame.quit()
+                        case 4:
+                            self.update_instance_states(InstanceState.mainmenu)
+                            self.scenes[self.actualState - 1].resume()
                         case _:
                             pass
                     actual_scene.render()

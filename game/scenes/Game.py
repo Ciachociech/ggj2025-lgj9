@@ -32,6 +32,14 @@ class GameMode(IntEnum):
     mixed_limit = 3
 
 
+def calculate_score(size):
+    value = int(size / 8)
+    value = int(round(value * value / 5))
+    if value > 20:
+        return value + 1
+    return value
+
+
 class Game(common.Scene):
 
     def __init__(self, window):
@@ -155,7 +163,7 @@ class Game(common.Scene):
                     if self.is_left_mouse_clicked:
                         for it in range(self.animal_chosen, len(self.animals)):
                             self.animals[it].update_position()
-                        self.score += int(self.animals[self.animal_chosen].size / 8)
+                        self.score += calculate_score(self.animals[self.animal_chosen].size)
                         bubble.captured_animal_image = self.animals[self.animal_chosen].img.image
                         bubble.change_movement_when_capture()
                         bubble.prepare_to_delete = False
@@ -187,6 +195,17 @@ class Game(common.Scene):
         self.mouse_click_cooldown += 1
         self.keyboard_click_cooldown += 1
         self.timer.update_timer()
+
+        # check win and lose conditions
+        if self.timer.elapsed_time / 1000 >= self.time_limit:
+            match self.game_mode:
+                case GameMode.time_limit:
+                    return 2
+                case GameMode.mixed_limit:
+                    return 3
+
+        if self.animals_left == 0 and len(self.animals) == 0:
+            return 4
 
         return 0
 
@@ -225,7 +244,7 @@ class Game(common.Scene):
         if self.animal_chosen != -1:
             self.window.window.blit(self.cursor_image.image, self.cursor_image_rect)
         self.font.render_text(self.window.window, self.score_text + str(self.score), pygame.Color(255, 255, 255, 255), (8, 8))
-        if self.game_mode is GameMode.time_limit or GameMode.mixed_limit:
+        if (self.game_mode is GameMode.time_limit or self.game_mode is GameMode.mixed_limit) and self.timer.elapsed_time / 1000 < self.time_limit:
             self.font.render_text(self.window.window,
                                   self.time_text + "{:4.2f}".format(self.time_limit - self.timer.elapsed_time / 1000) + "s",
                                   pygame.Color(255, 255, 255, 255), (8, 64))
