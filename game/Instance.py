@@ -60,11 +60,18 @@ class Instance:
             match self.actualState:
                 case InstanceState.none:
                     self.update_instance_states(InstanceState.mainmenu)
+                    self.scenes[self.actualState - 1].resume()
                 case InstanceState.mainmenu:
                     actual_scene.process_input(pygame.key.get_pressed(), pygame.joystick.Joystick,
                                        pygame.mouse.get_pressed(), pygame.mouse.get_pos())
                     game_val = actual_scene.update()
                     match game_val:
+                        case 0:
+                            self.update_instance_states(InstanceState.game)
+                            self.scenes[self.actualState - 1].resume()
+                        case 3:
+                            pygame.quit()
+                            break
                         case _:
                             pass
                     actual_scene.render()
