@@ -88,9 +88,9 @@ class Game(common.Scene):
 
         # manage bubbles
         for bubble in self.bubbles:
+            bubble.update()
             if bubble.captured_animal_image is not None:
                 continue
-            bubble.update()
             if pygame.Rect(bubble.center[0] - bubble.radius, bubble.center[1] - bubble.radius, 2 * bubble.radius, 2 * bubble.radius).collidepoint(self.cursor_image_rect.center):
                 if self.animal_chosen != -1 and bubble.radius > 2 * self.animals[self.animal_chosen].size / math.sqrt(2):
                     bubble.is_bubble_hovered = True
@@ -99,6 +99,7 @@ class Game(common.Scene):
                             self.animals[it].update_position()
                         self.score += int(self.animals[self.animal_chosen].size / 8)
                         bubble.captured_animal_image = self.animals[self.animal_chosen].img.image
+                        bubble.change_movement_when_capture()
 
                         del self.animals[self.animal_chosen]
                         self.animal_chosen = -1
