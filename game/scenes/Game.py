@@ -53,7 +53,7 @@ class Game(common.Scene):
             self.is_mouse_clicked = mouse_input[0]
 
     def update(self):
-        while len(self.animals) < 5:
+        while len(self.animals) < 10:
             match random.randint(1, 5):
                 case 1:
                     self.animals.append(game.objects.Cow(128 * len(self.animals)))
@@ -68,7 +68,7 @@ class Game(common.Scene):
                 case _:
                     pass
 
-        if self.is_animal_chosen:
+        if self.is_animal_chosen != -1:
             pygame.mouse.set_visible(False)
             self.cursor_image = self.animals[0].img
             self.cursor_image_rect = self.cursor_image.image.get_rect()
