@@ -28,6 +28,7 @@ class Game(common.Scene):
         self.score = 0
 
         self.background = game.objects.Background()
+        self.ufo = game.objects.Ufo()
         self.bubble_image = drawable.Image("bubble_image", "assets/sprites/bubble.png")
         self.bubbles = []
         self.animals = []
@@ -86,10 +87,12 @@ class Game(common.Scene):
 
     def render(self, color=pygame.Color(255, 255, 255, 255)):
         self.background.render(self.window.window)
+        self.ufo.render(self.window.window)
         for bubble in self.bubbles:
             bubble_surface = pygame.transform.scale(self.bubble_image.image, (bubble.radius, bubble.radius))
             position = (bubble.center[0] - bubble.radius / 2, bubble.center[1] - bubble.radius / 2)
             self.window.window.blit(bubble_surface, position)
+
 
         self.window.window.blit(self.cursor_image.image, self.cursor_image_rect)
         self.font.render_text(self.window.window, self.score_text + str(self.score), pygame.Color(255, 255, 255, 255), (100, 50))
