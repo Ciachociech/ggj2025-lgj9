@@ -1,3 +1,4 @@
+import math
 import random
 
 import pygame
@@ -51,13 +52,15 @@ class Game(common.Scene):
 
     def update(self):
         while len(self.animals) < 5:
-            match random.randint(1, 3):
+            match random.randint(1, 4):
                 case 1:
                     self.animals.append(game.objects.Cow())
                 case 2:
                     self.animals.append(game.objects.Chicken())
                 case 3:
                     self.animals.append(game.objects.Fox())
+                case 4:
+                    self.animals.append(game.objects.Deer())
                 case _:
                     pass
             if len(self.animals) == 5:
@@ -69,13 +72,16 @@ class Game(common.Scene):
                 resolve_collision(self.bubbles[it], self.bubbles[jt])
         for bubble in self.bubbles:
             bubble.update()
-            if self.is_mouse_clicked and pygame.Rect(bubble.center[0] - bubble.radius, bubble.center[1] - bubble.radius, 2 * bubble.radius, 2 * bubble.radius).collidepoint(self.cursor_image_rect.center):
-                bubble.prepare_to_delete = True
-                self.mouse_click_cooldown = 0
-                if self.animals[0].size < bubble.radius:
-                    self.animals = self.animals[1:]
-                    self.score += 1
+            if pygame.Rect(bubble.center[0] - bubble.radius, bubble.center[1] - bubble.radius, 2 * bubble.radius, 2 * bubble.radius).collidepoint(self.cursor_image_rect.center):
+                if bubble.radius > 2 * self.animals[0].size / math.sqrt(2):
+                    bubble.is_bubble_hovered = True
+                    if self.is_mouse_clicked:
+                        self.animals = self.animals[1:]
+                        self.score += 1
+                if self.is_mouse_clicked:
+                    bubble.prepare_to_delete = True
                     self.is_mouse_clicked = False
+                    self.mouse_click_cooldown = 0
             if bubble.prepare_to_delete:
                 self.bubbles.remove(bubble)
 
