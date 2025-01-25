@@ -86,14 +86,14 @@ class Game(common.Scene):
         for bubble in self.bubbles:
             bubble.update()
             if pygame.Rect(bubble.center[0] - bubble.radius, bubble.center[1] - bubble.radius, 2 * bubble.radius, 2 * bubble.radius).collidepoint(self.cursor_image_rect.center):
-                if bubble.radius > 2 * self.animals[0].size / math.sqrt(2):
+                if self.animal_chosen != -1 and bubble.radius > 2 * self.animals[self.animal_chosen].size / math.sqrt(2):
                     bubble.is_bubble_hovered = True
-                    if self.is_left_mouse_clicked and self.animal_chosen != -1:
+                    if self.is_left_mouse_clicked:
+                        for it in range(self.animal_chosen, len(self.animals)):
+                            self.animals[it].update_position()
                         del self.animals[self.animal_chosen]
                         self.score += 1
                         self.animal_chosen = -1
-                        for animal in self.animals:
-                            animal.update_position()
                 if self.is_left_mouse_clicked:
                     bubble.prepare_to_delete = True
                     self.is_left_mouse_clicked = False
@@ -108,7 +108,7 @@ class Game(common.Scene):
         # manage animals
         if self.is_right_mouse_clicked:
             self.animal_chosen = -1
-        for it in range (1, len(self.animals)):
+        for it in range (0, len(self.animals)):
             if self.animals[it].rect.collidepoint(pygame.mouse.get_pos()) and self.is_left_mouse_clicked:
                 self.animal_chosen = it
                 self.cursor_image = self.animals[it].img
