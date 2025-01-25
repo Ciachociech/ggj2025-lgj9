@@ -74,12 +74,8 @@ class Game(common.Scene):
         # set cursor when any animal is chosen
         if self.animal_chosen != -1:
             pygame.mouse.set_visible(False)
-            self.cursor_image = self.animals[self.animal_chosen].img
-            self.cursor_image_rect = self.cursor_image.image.get_rect()
         else:
             pygame.mouse.set_visible(True)
-            self.cursor_image = self.animals[0].img
-            self.cursor_image_rect = self.cursor_image.image.get_rect()
 
         # check collision
         for it in range (0, len(self.bubbles) - 1):
@@ -95,6 +91,7 @@ class Game(common.Scene):
                     if self.is_left_mouse_clicked:
                         self.animals = self.animals[1:]
                         self.score += 1
+                        self.animal_chosen = -1
                         for animal in self.animals:
                             animal.update_position()
                 if self.is_left_mouse_clicked:
@@ -114,6 +111,8 @@ class Game(common.Scene):
         for it in range (1, len(self.animals)):
             if self.animals[it].rect.collidepoint(pygame.mouse.get_pos()) and self.is_left_mouse_clicked:
                 self.animal_chosen = it
+                self.cursor_image = self.animals[it].img
+                self.cursor_image_rect = self.cursor_image.image.get_rect()
 
         # increment other variables
         self.frames_per_beginning += 1
