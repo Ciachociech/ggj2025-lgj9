@@ -8,7 +8,7 @@ import common.Object
 bubble_start_distance = 48
 
 def check_containing(bubble):
-    area_rect = pygame.Rect(0, 0, 1280, 720)
+    area_rect = pygame.Rect(0, 0, 1280, 592)
     check_result = area_rect[0] < bubble.center[0] - bubble.radius / 2
     check_result &= area_rect[1] < bubble.center[1] - bubble.radius / 2
     check_result &= area_rect[2] > bubble.center[0] + bubble.radius / 2

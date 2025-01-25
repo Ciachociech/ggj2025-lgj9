@@ -5,59 +5,61 @@ import common.Object
 
 class Animal(common.Object):
 
-    def __init__(self, tag, size, image):
+    def __init__(self, tag, size, image, x_pos):
         super().__init__(tag, image)
         self.size = size
+        self.rect = pygame.Rect(x_pos, 592, 128, 128)
 
-    def render(self, window, position):
-        super().render(window, position)
-        '''
-        pygame.draw.rect(window.window, pygame.Color(255, 255, 255, 255),
-                         pygame.Rect(position[0] - self.size / 2, position[1] - self.size / 2,
-                                     position[0] + self.size / 2, position[1] + self.size / 2), 1)
-        '''
+    def update_position(self):
+        self.rect = pygame.Rect(self.rect[0] - 128, self.rect[1], self.rect[2], self.rect[3])
+
+    def render(self, window, position = (0, 0)):
+        super().render(window, (self.rect[0], self.rect[1]) + position)
 
 
 class Cow(Animal):
 
-    def __init__(self):
-        super().__init__("CowAnimalObject", 108, "assets/sprites/cow.png")
+    def __init__(self, x_pos):
+        super().__init__("CowAnimalObject", 108, "assets/sprites/cow.png", x_pos)
 
-    def render(self, window, position):
+    def render(self, window, position = (0, 0)):
         super().render(window, position)
 
 
 class Chicken(Animal):
 
-    def __init__(self):
-        super().__init__("ChickenAnimalObject", 32, "assets/sprites/chicken.png")
+    def __init__(self, x_pos):
+        super().__init__("ChickenAnimalObject", 32, "assets/sprites/chicken.png", x_pos)
 
-    def render(self, window, position):
+    def render(self, window, position = (0, 0)):
         super().render(window, position)
 
 
 class Fox(Animal):
 
-    def __init__(self):
-        super().__init__("FoxAnimalObject", 64, "assets/sprites/fox.png")
+    def __init__(self, x_pos):
+        super().__init__("FoxAnimalObject", 64, "assets/sprites/fox.png", x_pos)
 
-    def render(self, window, position):
+    def render(self, window, position = (0, 0)):
         super().render(window, position)
 
 
 class Deer(Animal):
 
-    def __init__(self):
-        super().__init__("DeerAnimalObject", 96, "assets/sprites/deer.png")
+    def __init__(self, x_pos):
+        super().__init__("DeerAnimalObject", 96, "assets/sprites/deer.png", x_pos)
 
-    def render(self, window, position):
+    def render(self, window, position = (0, 0)):
         super().render(window, position)
 
 class Rabbit(Animal):
 
-    def __init__(self, spawn_value):
+    def __init__(self, spawn_value, x_pos):
         if spawn_value < 90:
-            super().__init__("RabbitAnimalObject", 24, "assets/sprites/rabbit.png")
+            super().__init__("RabbitAnimalObject", 24, "assets/sprites/rabbit.png", x_pos)
         else:
-            super().__init__("RabbitAnimalObject", 16, "assets/sprites/stefan.png")
+            super().__init__("RabbitAnimalObject", 16, "assets/sprites/stefan.png", x_pos)
+
+        def render(self, window, position=(0, 0)):
+            super().render(window, position)
 
