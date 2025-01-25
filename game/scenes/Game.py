@@ -57,7 +57,7 @@ class Game(common.Scene):
     def update(self):
         # if less than 10 animals, spawn to fill this limit
         while len(self.animals) < 10:
-            match random.randint(1, 5):
+            match random.randint(1, 6):
                 case 1:
                     self.animals.append(game.objects.Cow(128 * len(self.animals)))
                 case 2:
@@ -68,6 +68,8 @@ class Game(common.Scene):
                     self.animals.append(game.objects.Deer(128 * len(self.animals)))
                 case 5:
                     self.animals.append(game.objects.Rabbit(random.randint(0, 99), 128 * len(self.animals)))
+                case 6:
+                    self.animals.append(game.objects.Zubr(128 * len(self.animals)))
                 case _:
                     pass
 
