@@ -58,7 +58,7 @@ class Rabbit(Animal):
         if spawn_value < 90:
             super().__init__("RabbitAnimalObject", 24, "assets/sprites/rabbit.png", x_pos)
         else:
-            super().__init__("RabbitAnimalObject", 16, "assets/sprites/stefan.png", x_pos)
+            super().__init__("RabbitAnimalObject", 24, "assets/sprites/stefan.png", x_pos)
 
         def render(self, window, position=(0, 0)):
             super().render(window, position)

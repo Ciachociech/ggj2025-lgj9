@@ -1,5 +1,6 @@
 import math
 import random
+from enum import IntEnum
 
 import pygame
 
@@ -9,6 +10,7 @@ import drawable.Image
 import game.objects.Animal
 import game.objects.Background
 import game.objects.Bubble
+import system.Timer
 
 def resolve_collision(bubble1, bubble2):
     if bubble1.captured_animal_image or bubble2.captured_animal_image:
@@ -21,6 +23,13 @@ def resolve_collision(bubble1, bubble2):
         else:
             bubble1.prepare_to_delete = True
             bubble2.prepare_to_delete = True
+
+
+class GameMode(IntEnum):
+    none = 0
+    no_limit = 1
+    time_limit = 2
+    mixed_limit = 3
 
 
 class Game(common.Scene):
@@ -42,6 +51,7 @@ class Game(common.Scene):
         self.font = drawable.Font("GameFont")
         self.font.load_font_from_file("assets/fonts/NerkoOne-Regular.ttf", 48)
         self.score_text = "Wynik:"
+        self.time_text = "Czas: "
 
         self.is_left_mouse_clicked = False
         self.is_right_mouse_clicked = False
@@ -52,6 +62,31 @@ class Game(common.Scene):
 
         self.keyboard_click_cooldown = None
         self.escape_key_pressed = None
+
+        self.game_mode = None
+        self.timer = system.Timer("GameTimer")
+        self.time_limit = -1
+        self.animals_left = -1
+
+    def set(self, game_mode):
+        self.bubbles = []
+        self.animals = []
+        self.game_mode = game_mode
+        self.timer.restart()
+
+        match self.game_mode:
+            case GameMode.no_limit:
+                self.time_limit = -1
+                self.animals_left = -1
+            case GameMode.time_limit:
+                self.time_limit = 60
+                self.animals_left = -1
+            case GameMode.mixed_limit:
+                self.time_limit = 0
+                self.animals_left = 10
+            case _:
+                self.time_limit = -1
+                self.animals_left = -1
 
         self.resume()
         self.update()
@@ -76,7 +111,7 @@ class Game(common.Scene):
             return 1
 
         # if less than 10 animals, spawn to fill this limit
-        while len(self.animals) < 10:
+        while len(self.animals) < 10 and self.animals_left != 0:
             match random.randint(1, 6):
                 case 1:
                     self.animals.append(game.objects.Cow(128 * len(self.animals)))
@@ -92,6 +127,9 @@ class Game(common.Scene):
                     self.animals.append(game.objects.Zubr(128 * len(self.animals)))
                 case _:
                     pass
+            if self.game_mode == GameMode.mixed_limit:
+                self.time_limit += (self.animals[-1].size // 16)
+            self.animals_left -= 1
 
         # set cursor when any animal is chosen
         if self.animal_chosen != -1:
@@ -148,6 +186,7 @@ class Game(common.Scene):
         self.frames_per_beginning += 1
         self.mouse_click_cooldown += 1
         self.keyboard_click_cooldown += 1
+        self.timer.update_timer()
 
         return 0
 
@@ -185,4 +224,8 @@ class Game(common.Scene):
 
         if self.animal_chosen != -1:
             self.window.window.blit(self.cursor_image.image, self.cursor_image_rect)
-        self.font.render_text(self.window.window, self.score_text + str(self.score), pygame.Color(255, 255, 255, 255), (100, 50))
+        self.font.render_text(self.window.window, self.score_text + str(self.score), pygame.Color(255, 255, 255, 255), (8, 8))
+        if self.game_mode is GameMode.time_limit or GameMode.mixed_limit:
+            self.font.render_text(self.window.window,
+                                  self.time_text + "{:4.2f}".format(self.time_limit - self.timer.elapsed_time / 1000) + "s",
+                                  pygame.Color(255, 255, 255, 255), (8, 64))

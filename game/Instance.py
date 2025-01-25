@@ -5,6 +5,7 @@ import pygame
 
 import game.scenes.Game
 import system.Display
+from game.scenes.Game import GameMode
 
 
 class InstanceState(IntEnum):
@@ -68,7 +69,13 @@ class Instance:
                     match game_val:
                         case 0:
                             self.update_instance_states(InstanceState.game)
-                            self.scenes[self.actualState - 1].resume()
+                            self.scenes[self.actualState - 1].set(GameMode.no_limit)
+                        case 1:
+                            self.update_instance_states(InstanceState.game)
+                            self.scenes[self.actualState - 1].set(GameMode.time_limit)
+                        case 2:
+                            self.update_instance_states(InstanceState.game)
+                            self.scenes[self.actualState - 1].set(GameMode.mixed_limit)
                         case 3:
                             pygame.quit()
                             break
