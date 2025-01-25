@@ -16,7 +16,7 @@ class Button(common.Object):
         self.button_hover_highlight = drawable.Image("mainmenu-highlight", "assets/sprites/button_background_hover.png")
 
         self.font = drawable.Font("GameFont")
-        self.font.load_font_from_file("assets/fonts/NerkoOne-Regular.ttf", 48)
+        self.font.load_font_from_file("assets/fonts/Tektur-Regular.ttf", 48)
         self.button_text = text
 
     def update(self):

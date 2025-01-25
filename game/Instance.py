@@ -18,7 +18,8 @@ class InstanceState(IntEnum):
 class Instance:
     def __init__(self):
         pygame.init()
-        self.display = system.Display(1280, 720, "GGJ2025-ŁGJ9")
+        self.display = system.Display(1280, 720,
+                                      "Tajemnicze bąbelki z kosmosu (Łódzki Game Jam 9/Global Game Jam 2025)")
         self.display.set_icon("assets/sprites/logo.png")
         self.display.frames = 60
 

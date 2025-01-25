@@ -57,8 +57,8 @@ class Game(common.Scene):
         self.animals = []
 
         self.font = drawable.Font("GameFont")
-        self.font.load_font_from_file("assets/fonts/NerkoOne-Regular.ttf", 48)
-        self.score_text = "Wynik:"
+        self.font.load_font_from_file("assets/fonts/Tektur-Regular.ttf", 48)
+        self.score_text = "Wynik: "
         self.time_text = "Czas: "
 
         self.is_left_mouse_clicked = False
