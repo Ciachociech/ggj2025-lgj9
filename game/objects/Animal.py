@@ -30,7 +30,16 @@ class Cow(Animal):
 class Chicken(Animal):
 
     def __init__(self):
-        super().__init__("ChickenAnimalObject", 64, "assets/sprites/chicken.png")
+        super().__init__("ChickenAnimalObject", 32, "assets/sprites/chicken.png")
+
+    def render(self, window, position):
+        super().render(window, position)
+
+
+class Fox(Animal):
+
+    def __init__(self):
+        super().__init__("FoxAnimalObject", 64, "assets/sprites/fox.png")
 
     def render(self, window, position):
         super().render(window, position)

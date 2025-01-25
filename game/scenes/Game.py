@@ -51,11 +51,13 @@ class Game(common.Scene):
 
     def update(self):
         while len(self.animals) < 5:
-            match random.randint(1, 2):
+            match random.randint(1, 3):
                 case 1:
                     self.animals.append(game.objects.Cow())
                 case 2:
                     self.animals.append(game.objects.Chicken())
+                case 3:
+                    self.animals.append(game.objects.Fox())
                 case _:
                     pass
             if len(self.animals) == 5:
