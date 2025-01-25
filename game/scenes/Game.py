@@ -38,13 +38,15 @@ class Game(common.Scene):
 
         pygame.mouse.set_visible(False)
         self.is_mouse_clicked = False
+        self.mouse_click_cooldown = 0
         self.cursor_image = None
         self.cursor_image_rect = None
         self.update()
 
     def process_input(self, keyboard_input, joystick, mouse_input, mouse_position):
         self.cursor_image_rect.center = pygame.mouse.get_pos()
-        self.is_mouse_clicked = mouse_input[0]
+        if self.mouse_click_cooldown > 3:
+            self.is_mouse_clicked = mouse_input[0]
 
     def update(self):
         while len(self.animals) < 5:
@@ -64,12 +66,13 @@ class Game(common.Scene):
                 resolve_collision(self.bubbles[it], self.bubbles[jt])
         for bubble in self.bubbles:
             bubble.update()
-            if self.is_mouse_clicked and pygame.Rect(bubble.center[0] - self.animals[0].size / 2, bubble.center[1] - self.animals[0].size / 2, self.animals[0].size, self.animals[0].size).collidepoint(self.cursor_image_rect.center):
+            if self.is_mouse_clicked and pygame.Rect(bubble.center[0] - bubble.radius, bubble.center[1] - bubble.radius, 2 * bubble.radius, 2 * bubble.radius).collidepoint(self.cursor_image_rect.center):
                 bubble.prepare_to_delete = True
+                self.mouse_click_cooldown = 0
                 if self.animals[0].size < bubble.radius:
                     self.animals = self.animals[1:]
                     self.score += 1
-                    return
+                    self.is_mouse_clicked = False
             if bubble.prepare_to_delete:
                 self.bubbles.remove(bubble)
 
@@ -79,6 +82,7 @@ class Game(common.Scene):
             self.bubbles.append(new_bubble)
 
         self.frames_per_beginning += 1
+        self.mouse_click_cooldown += 1
 
     def render(self, color=pygame.Color(255, 255, 255, 255)):
         self.background.render(self.window.window)
