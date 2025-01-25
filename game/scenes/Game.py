@@ -93,8 +93,8 @@ class Game(common.Scene):
                     if self.is_left_mouse_clicked:
                         for it in range(self.animal_chosen, len(self.animals)):
                             self.animals[it].update_position()
+                        self.score += int(self.animals[self.animal_chosen].size / 8)
                         del self.animals[self.animal_chosen]
-                        self.score += 1
                         self.animal_chosen = -1
                 if self.is_left_mouse_clicked:
                     bubble.prepare_to_delete = True
