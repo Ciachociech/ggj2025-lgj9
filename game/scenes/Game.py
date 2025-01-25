@@ -5,6 +5,7 @@ import pygame
 import audio.Sound
 import common.Scene
 import drawable.Image
+import game.objects.Animal
 import game.objects.Background
 import game.objects.Bubble
 
@@ -24,23 +25,47 @@ class Game(common.Scene):
         super().__init__("GameMainScene", window)
 
         self.frames_per_beginning = 0
+        self.score = 0
+
         self.background = game.objects.Background()
         self.bubble_image = drawable.Image("bubble_image", "assets/sprites/bubble.png")
         self.bubbles = []
+        self.animals = []
 
         pygame.mouse.set_visible(False)
-        self.cursor_image = drawable.Image("cursor_image", "assets/sprites/chicken.png")
-        self.cursor_image_rect = self.cursor_image.image.get_rect()
+        self.is_mouse_clicked = False
+        self.cursor_image = None
+        self.cursor_image_rect = None
+        self.update()
 
     def process_input(self, keyboard_input, joystick, mouse_input, mouse_position):
         self.cursor_image_rect.center = pygame.mouse.get_pos()
+        self.is_mouse_clicked = mouse_input[0]
 
     def update(self):
+        while len(self.animals) < 5:
+            match random.randint(1, 2):
+                case 1:
+                    self.animals.append(game.objects.Cow())
+                case 2:
+                    self.animals.append(game.objects.Chicken())
+                case _:
+                    pass
+            if len(self.animals) == 5:
+                self.cursor_image = self.animals[0].img
+                self.cursor_image_rect = self.cursor_image.image.get_rect()
+
         for it in range (0, len(self.bubbles) - 1):
             for jt in range(it + 1, len(self.bubbles)):
                 resolve_collision(self.bubbles[it], self.bubbles[jt])
         for bubble in self.bubbles:
             bubble.update()
+            if self.is_mouse_clicked and pygame.Rect(bubble.center[0] - self.animals[0].size / 2, bubble.center[1] - self.animals[0].size / 2, self.animals[0].size, self.animals[0].size).collidepoint(self.cursor_image_rect.center):
+                bubble.prepare_to_delete = True
+                if self.animals[0].size < bubble.radius:
+                    self.animals = self.animals[1:]
+                    self.score += 1
+                    return
             if bubble.prepare_to_delete:
                 self.bubbles.remove(bubble)
 
