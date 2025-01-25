@@ -13,6 +13,7 @@ class InstanceState(IntEnum):
     mainmenu = 1
     game = 2
     pause = 3
+    gameover = 4
 
 
 class Instance:
@@ -30,15 +31,8 @@ class Instance:
         self.scenes.append(game.scenes.MainMenu(self.display))
         self.scenes.append(game.scenes.Game(self.display))
         self.scenes.append(game.scenes.Pause(self.display))
-        '''
-        load scenes like:
-        self.scenes.append(Scene("tag", self.display))
-        '''
+        self.scenes.append(game.scenes.Gameover(self.display))
 
-    '''
-    after updating call this like:
-    self.update_instance_states(new_state)
-    '''
     def update_instance_states(self, new_state):
         self.previousState = self.actualState
         self.actualState = new_state
@@ -92,13 +86,18 @@ class Instance:
                             self.update_instance_states(InstanceState.pause)
                             self.scenes[self.actualState - 1].resume()
                         case 2:
-                            self.update_instance_states(InstanceState.pause)
-                            self.scenes[self.actualState - 1].resume()
+                            self.update_instance_states(InstanceState.gameover)
+                            self.scenes[self.actualState - 1].set(self.scenes[self.previousState - 1].game_mode,
+                                                                  (self.scenes[self.previousState - 1].score, -1))
                         case 3:
-                            pygame.quit()
+                            self.update_instance_states(InstanceState.gameover)
+                            self.scenes[self.actualState - 1].set(self.scenes[self.previousState - 1].game_mode,
+                                                                  (self.scenes[self.previousState - 1].score, -1))
                         case 4:
-                            self.update_instance_states(InstanceState.mainmenu)
-                            self.scenes[self.actualState - 1].resume()
+                            self.update_instance_states(InstanceState.gameover)
+                            self.scenes[self.actualState - 1].set(self.scenes[self.previousState - 1].game_mode,
+                                                                  (self.scenes[self.previousState - 1].score,
+                                                                   self.scenes[self.previousState - 1].timer.elapsed_time))
                         case _:
                             pass
                     actual_scene.render()
@@ -114,14 +113,17 @@ class Instance:
                             pass
                     previous_scene.render()
                     actual_scene.render()
-                    '''
-                    # scene process input like:
-                    scene.process_input(pygame.key.get_pressed(), pygame.joystick.Joystick, pygame.mouse.get_pressed(), pygame.mouse.get_pos())
-                    # scene update
-                    scene.update()
-                    # scene(s) render
-                    scene.render()
-                    '''
+                case InstanceState.gameover:
+                    actual_scene.process_input(pygame.key.get_pressed(), pygame.joystick.Joystick,
+                                               pygame.mouse.get_pressed(), pygame.mouse.get_pos())
+                    if actual_scene.update():
+                        self.update_instance_states(InstanceState.mainmenu)
+                        self.scenes[self.actualState - 1].resume()
+                    if self.previousState is InstanceState.game:
+                        previous_scene.render()
+                    actual_scene.render()
+                case _:
+                    pass
 
             self.display.display_and_wait()
             await asyncio.sleep(0)
