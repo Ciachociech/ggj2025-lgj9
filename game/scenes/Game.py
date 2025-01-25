@@ -31,7 +31,7 @@ class Game(common.Scene):
         self.frames_per_beginning = 0
         self.score = 0
 
-        self.background = game.objects.Background()
+        self.background = game.objects.Background("assets/sprites/background.png")
         self.ufo = game.objects.Ufo()
         self.bubble_image = drawable.Image("bubble_image", "assets/sprites/bubble.png")
         self.hovered_bubble_image = drawable.Image("bubble_image", "assets/sprites/h_bubble.png")

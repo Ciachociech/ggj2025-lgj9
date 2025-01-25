@@ -9,8 +9,9 @@ import system.Display
 
 class InstanceState(IntEnum):
     none = 0
-    game = 1
-    pause = 2
+    mainmenu = 1
+    game = 2
+    pause = 3
 
 
 class Instance:
@@ -24,6 +25,7 @@ class Instance:
         self.previousState = InstanceState.none
 
         self.scenes = []
+        self.scenes.append(game.scenes.MainMenu(self.display))
         self.scenes.append(game.scenes.Game(self.display))
         self.scenes.append(game.scenes.Pause(self.display))
         '''
@@ -57,7 +59,15 @@ class Instance:
 
             match self.actualState:
                 case InstanceState.none:
-                    self.update_instance_states(InstanceState.game)
+                    self.update_instance_states(InstanceState.mainmenu)
+                case InstanceState.mainmenu:
+                    actual_scene.process_input(pygame.key.get_pressed(), pygame.joystick.Joystick,
+                                       pygame.mouse.get_pressed(), pygame.mouse.get_pos())
+                    game_val = actual_scene.update()
+                    match game_val:
+                        case _:
+                            pass
+                    actual_scene.render()
                 case InstanceState.game:
                     actual_scene.process_input(pygame.key.get_pressed(), pygame.joystick.Joystick,
                                                pygame.mouse.get_pressed(), pygame.mouse.get_pos())
