@@ -29,6 +29,7 @@ class Bubble(common.Object):
         self.prepare_to_delete = False
         self.is_bubble_hovered = False
 
+        self.captured_animal_image = None
         self.update()
 
     def update(self):
