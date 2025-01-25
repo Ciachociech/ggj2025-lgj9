@@ -10,6 +10,7 @@ import system.Display
 class InstanceState(IntEnum):
     none = 0
     game = 1
+    pause = 2
 
 
 class Instance:
@@ -24,6 +25,7 @@ class Instance:
 
         self.scenes = []
         self.scenes.append(game.scenes.Game(self.display))
+        self.scenes.append(game.scenes.Pause(self.display))
         '''
         load scenes like:
         self.scenes.append(Scene("tag", self.display))
@@ -47,8 +49,11 @@ class Instance:
             self.display.clear()
 
             actual_scene = None
+            previous_scene = None
             if self.actualState != InstanceState.none:
                 actual_scene = self.scenes[self.actualState - 1]
+            if self.previousState != InstanceState.none:
+                previous_scene = self.scenes[self.previousState - 1]
 
             match self.actualState:
                 case InstanceState.none:
@@ -58,8 +63,23 @@ class Instance:
                                                pygame.mouse.get_pressed(), pygame.mouse.get_pos())
                     game_val = actual_scene.update()
                     match game_val:
+                        case 1:
+                            self.update_instance_states(InstanceState.pause)
+                            self.scenes[self.actualState - 1].resume()
                         case _:
                             pass
+                    actual_scene.render()
+                case InstanceState.pause:
+                    actual_scene.process_input(pygame.key.get_pressed(), pygame.joystick.Joystick,
+                                               pygame.mouse.get_pressed(), pygame.mouse.get_pos())
+                    game_val = actual_scene.update()
+                    match game_val:
+                        case 1:
+                            self.update_instance_states(InstanceState.game)
+                            self.scenes[self.actualState - 1].resume()
+                        case _:
+                            pass
+                    previous_scene.render()
                     actual_scene.render()
                     '''
                     # scene process input like:

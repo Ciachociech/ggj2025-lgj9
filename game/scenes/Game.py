@@ -48,15 +48,32 @@ class Game(common.Scene):
         self.mouse_click_cooldown = 0
         self.cursor_image = None
         self.cursor_image_rect = pygame.Rect(0, 0, 0, 0)
+
+        self.keyboard_click_cooldown = None
+        self.escape_key_pressed = None
+
+        self.resume()
         self.update()
 
+    def resume(self):
+        self.keyboard_click_cooldown = 0
+        self.escape_key_pressed = False
+
     def process_input(self, keyboard_input, joystick, mouse_input, mouse_position):
+        if self.keyboard_click_cooldown > 3 and keyboard_input[pygame.K_ESCAPE]:
+            self.escape_key_pressed = True
+            return
+
         self.cursor_image_rect.center = pygame.mouse.get_pos()
         if self.mouse_click_cooldown > 3:
             self.is_left_mouse_clicked = mouse_input[0]
             self.is_right_mouse_clicked = mouse_input[2]
 
     def update(self):
+        # if escape key is pressed
+        if self.escape_key_pressed:
+            return 1
+
         # if less than 10 animals, spawn to fill this limit
         while len(self.animals) < 10:
             match random.randint(1, 6):
@@ -127,6 +144,9 @@ class Game(common.Scene):
         # increment other variables
         self.frames_per_beginning += 1
         self.mouse_click_cooldown += 1
+        self.keyboard_click_cooldown += 1
+
+        return 0
 
 
     def render(self, color=pygame.Color(255, 255, 255, 255)):
