@@ -23,7 +23,7 @@ class MainMenu(common.Scene):
         self.is_left_mouse_clicked = None
 
         self.title_font = drawable.Font("MainMenuTitleFont")
-        self.title_font.load_font_from_file("assets/fonts/Tektur-Regular.ttf", 64)
+        self.title_font.load_font_from_file("assets/fonts/Tektur-Medium.ttf", 64)
         self.bonus_font = drawable.Font("MainMenuBonusFont")
         self.bonus_font.load_font_from_file("assets/fonts/NerkoOne-Regular.ttf", 20)
         self.title_text = "Tajemnicze bąbelki z kosmosu"
@@ -52,9 +52,9 @@ class MainMenu(common.Scene):
         self.background.render(self.window.window)
         for button in self.buttons:
             button.render(self.window.window)
-        self.title_font.render_text(self.window.window, self.title_text, pygame.Color(255, 255, 0, 255),
-                              (642, 162), "center")
-        self.title_font.render_text(self.window.window, self.title_text, pygame.Color(255, 255, 255, 255),
+        self.title_font.render_text(self.window.window, self.title_text, pygame.Color(255, 255, 128, 255),
+                              (644, 164), "center")
+        self.title_font.render_text(self.window.window, self.title_text, pygame.Color(0, 255, 0, 255),
                               (640, 160), "center")
         self.bonus_font.render_text(self.window.window, self.bonus_text, pygame.Color(255, 255, 255, 255),
                               (1268, 708), "bottomright")
