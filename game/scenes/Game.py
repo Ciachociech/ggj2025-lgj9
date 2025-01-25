@@ -40,7 +40,8 @@ class Game(common.Scene):
         self.font.load_font_from_file("assets/fonts/NerkoOne-Regular.ttf", 48)
         self.score_text = "Wynik:"
 
-        self.is_mouse_clicked = False
+        self.is_left_mouse_clicked = False
+        self.is_right_mouse_clicked = False
         self.animal_chosen = -1
         self.mouse_click_cooldown = 0
         self.cursor_image = None
@@ -50,7 +51,8 @@ class Game(common.Scene):
     def process_input(self, keyboard_input, joystick, mouse_input, mouse_position):
         self.cursor_image_rect.center = pygame.mouse.get_pos()
         if self.mouse_click_cooldown > 3:
-            self.is_mouse_clicked = mouse_input[0]
+            self.is_left_mouse_clicked = mouse_input[0]
+            self.is_right_mouse_clicked = mouse_input[2]
 
     def update(self):
         # if less than 10 animals, spawn to fill this limit
@@ -72,10 +74,12 @@ class Game(common.Scene):
         # set cursor when any animal is chosen
         if self.animal_chosen != -1:
             pygame.mouse.set_visible(False)
-            self.cursor_image = self.animals[0].img
+            self.cursor_image = self.animals[self.animal_chosen].img
             self.cursor_image_rect = self.cursor_image.image.get_rect()
         else:
             pygame.mouse.set_visible(True)
+            self.cursor_image = self.animals[0].img
+            self.cursor_image_rect = self.cursor_image.image.get_rect()
 
         # check collision
         for it in range (0, len(self.bubbles) - 1):
@@ -88,14 +92,14 @@ class Game(common.Scene):
             if pygame.Rect(bubble.center[0] - bubble.radius, bubble.center[1] - bubble.radius, 2 * bubble.radius, 2 * bubble.radius).collidepoint(self.cursor_image_rect.center):
                 if bubble.radius > 2 * self.animals[0].size / math.sqrt(2):
                     bubble.is_bubble_hovered = True
-                    if self.is_mouse_clicked:
+                    if self.is_left_mouse_clicked:
                         self.animals = self.animals[1:]
                         self.score += 1
                         for animal in self.animals:
                             animal.update_position()
-                if self.is_mouse_clicked:
+                if self.is_left_mouse_clicked:
                     bubble.prepare_to_delete = True
-                    self.is_mouse_clicked = False
+                    self.is_left_mouse_clicked = False
                     self.mouse_click_cooldown = 0
             if bubble.prepare_to_delete:
                 self.bubbles.remove(bubble)
@@ -105,8 +109,10 @@ class Game(common.Scene):
             self.bubbles.append(new_bubble)
 
         # manage animals
+        if self.is_right_mouse_clicked:
+            self.animal_chosen = -1
         for it in range (1, len(self.animals)):
-            if self.animals[it].rect.collidepoint(self.cursor_image_rect.center) and self.is_mouse_clicked:
+            if self.animals[it].rect.collidepoint(pygame.mouse.get_pos()) and self.is_left_mouse_clicked:
                 self.animal_chosen = it
 
         # increment other variables
