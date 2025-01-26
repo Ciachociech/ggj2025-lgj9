@@ -71,9 +71,9 @@ class Game(common.Scene):
         self.keyboard_click_cooldown = None
         self.escape_key_pressed = None
 
-        self.pick_se = audio.Sound("OptionsSE", "assets/audio/pick.wav")
-        self.bubble_se = audio.Sound("OptionsSE", "assets/audio/bubble.wav")
-        self.insert_se = audio.Sound("OptionsSE", "assets/audio/insert.wav")
+        self.pick_se = audio.Sound("PickGameSE", "assets/audio/pick.wav")
+        self.bubble_se = audio.Sound("BubbleGameSE", "assets/audio/bubble.wav")
+        self.insert_se = audio.Sound("InsertGameSE", "assets/audio/insert.wav")
 
         self.game_mode = None
         self.timer = system.Timer("GameTimer")
@@ -89,6 +89,10 @@ class Game(common.Scene):
         self.timer.restart()
         self.animal_chosen = -1
         self.mouse_click_cooldown = 0
+
+        self.pick_se.sound.set_volume(0.3)
+        self.bubble_se.sound.set_volume(0.8)
+        self.insert_se.sound.set_volume(0.6)
 
         match self.game_mode:
             case GameMode.no_limit:

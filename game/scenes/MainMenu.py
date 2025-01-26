@@ -31,8 +31,7 @@ class MainMenu(common.Scene):
         self.title_text = "Tajemnicze bąbelki z kosmosu"
         self.bonus_text = "by Can'tCountTo3"
 
-        pygame.mixer.music.load("assets/audio/example.ogg")
-        self.se = audio.Sound("OptionsSE", "assets/audio/menu-hover.wav")
+        self.se = audio.Sound("MainMenuSE", "assets/audio/menu-hover.wav")
         self.last_played_sound = -1
 
         self.resume()
@@ -42,7 +41,6 @@ class MainMenu(common.Scene):
         self.is_left_mouse_clicked = False
         self.mouse_click_cooldown = 0
         self.last_played_sound = -1
-        pygame.mixer.music.play()
 
     def process_input(self, keyboard_input, joystick, mouse_input, mouse_position):
         self.cursor_image_rect.center = pygame.mouse.get_pos()

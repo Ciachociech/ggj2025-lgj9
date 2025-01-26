@@ -27,6 +27,8 @@ class Instance:
         self.actualState = InstanceState.none
         self.previousState = InstanceState.none
 
+        pygame.mixer.music.load("assets/audio/example.ogg")
+
         self.scenes = []
         self.scenes.append(game.scenes.MainMenu(self.display))
         self.scenes.append(game.scenes.Game(self.display))
@@ -38,6 +40,9 @@ class Instance:
         self.actualState = new_state
 
     async def loop(self):
+        pygame.mixer.music.set_volume(0.8)
+        pygame.mixer.music.play()
+
         while pygame.get_init():
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
