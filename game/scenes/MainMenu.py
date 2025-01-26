@@ -31,6 +31,7 @@ class MainMenu(common.Scene):
         self.title_text = "Tajemnicze bąbelki z kosmosu"
         self.bonus_text = "Jak nazwiemy team to coś tu wstawimy"
 
+        pygame.mixer.music.load("assets/audio/example.ogg")
         self.se = audio.Sound("OptionsSE", "assets/audio/simple-sound.wav")
         self.last_played_sound = -1
 
@@ -41,6 +42,7 @@ class MainMenu(common.Scene):
         self.is_left_mouse_clicked = False
         self.mouse_click_cooldown = 0
         self.last_played_sound = -1
+        pygame.mixer.music.play()
 
     def process_input(self, keyboard_input, joystick, mouse_input, mouse_position):
         self.cursor_image_rect.center = pygame.mouse.get_pos()
