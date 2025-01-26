@@ -13,6 +13,7 @@ class Gameover(common.Scene):
         super().__init__("GameoverScene", window)
         self.button = game.objects.Button((480, 600), "do menu")
 
+        self.background = game.objects.Background("assets/sprites/wynik.png")
         self.cursor_image = drawable.Image("mainmenu-cursor", "assets/sprites/kursorUFO.png")
         self.cursor_image_rect = self.cursor_image.image.get_rect()
         self.is_left_mouse_clicked = None
@@ -70,10 +71,7 @@ class Gameover(common.Scene):
         return False
 
     def render(self, color = pygame.Color(255, 255, 255, 255)):
-        semitransparent_rectangle = pygame.Surface((1280, 720))
-        semitransparent_rectangle.set_alpha(128)
-        semitransparent_rectangle.fill(pygame.Color(128, 128, 128))
-        self.window.window.blit(semitransparent_rectangle, (0, 0))
+        self.background.render(self.window.window)
 
         self.result_font.render_text(self.window.window, self.main_result_text, pygame.Color(255, 255, 0, 255),
                               (640, 80), "center")

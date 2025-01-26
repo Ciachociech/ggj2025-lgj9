@@ -11,6 +11,7 @@ class Pause(common.Scene):
     def __init__(self, window):
         super().__init__("PauseScene", window)
 
+        self.background = game.objects.Background("assets/sprites/pauza.png")
         self.buttons = []
         self.buttons.append(game.objects.Button((480, 500), "powrót"))
         self.buttons.append(game.objects.Button((480, 600), "do menu"))
@@ -68,10 +69,7 @@ class Pause(common.Scene):
         return None
 
     def render(self, color = pygame.Color(255, 255, 255, 255)):
-        semitransparent_rectangle = pygame.Surface((1280, 720))
-        semitransparent_rectangle.set_alpha(196)
-        semitransparent_rectangle.fill(pygame.Color(196, 196, 196))
-        self.window.window.blit(semitransparent_rectangle, (0, 0))
+        self.background.render(self.window.window)
 
         for button in self.buttons:
             button.render(self.window.window)
