@@ -71,7 +71,9 @@ class Game(common.Scene):
         self.keyboard_click_cooldown = None
         self.escape_key_pressed = None
 
-        self.se = audio.Sound("OptionsSE", "assets/audio/simple-sound.wav")
+        self.pick_se = audio.Sound("OptionsSE", "assets/audio/pick.wav")
+        self.bubble_se = audio.Sound("OptionsSE", "assets/audio/bubble.wav")
+        self.insert_se = audio.Sound("OptionsSE", "assets/audio/insert.wav")
 
         self.game_mode = None
         self.timer = system.Timer("GameTimer")
@@ -173,12 +175,12 @@ class Game(common.Scene):
                         bubble.captured_animal_image = self.animals[self.animal_chosen].img.image
                         bubble.change_movement_when_capture()
                         bubble.prepare_to_delete = False
-                        self.se.sound.play()
+                        self.insert_se.sound.play()
 
                         del self.animals[self.animal_chosen]
                         self.animal_chosen = -1
                 if self.is_left_mouse_clicked and bubble.captured_animal_image is None:
-                    self.se.sound.play()
+                    self.bubble_se.sound.play()
                     bubble.prepare_to_delete = True
                     self.is_left_mouse_clicked = False
                     self.mouse_click_cooldown = 0
@@ -190,19 +192,19 @@ class Game(common.Scene):
             self.bubbles.append(new_bubble)
 
         # manage animals
-        if self.is_right_mouse_clicked:
+        if self.is_right_mouse_clicked and self.animal_chosen != -1:
             self.animal_chosen = -1
-            self.se.sound.play()
+            self.pick_se.sound.play()
         for it in range (0, len(self.animals)):
             self.animals[it].update()
             if self.animals[it].rect.collidepoint(pygame.mouse.get_pos()):
                 if self.animal_chosen != it:
                     self.animals[it].is_hovered = True
-                if self.is_left_mouse_clicked:
+                if self.is_left_mouse_clicked and self.animal_chosen == -1:
                     self.animal_chosen = it
                     self.cursor_image = self.animals[it].img
                     self.cursor_image_rect = self.cursor_image.image.get_rect()
-                    self.se.sound.play()
+                    self.pick_se.sound.play()
 
         # increment other variables
         self.frames_per_beginning += 1

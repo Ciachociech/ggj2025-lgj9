@@ -26,7 +26,7 @@ class Pause(common.Scene):
         self.font.load_font_from_file("assets/fonts/Tektur-Regular.ttf", 96)
         self.text = "paused"
 
-        self.se = audio.Sound("OptionsSE", "assets/audio/simple-sound.wav")
+        self.se = audio.Sound("OptionsSE", "assets/audio/menu-hover.wav")
         self.last_played_sound = -1
 
         self.resume()

@@ -25,7 +25,7 @@ class Gameover(common.Scene):
         self.score_text = None
         self.time_text = None
 
-        self.se = audio.Sound("OptionsSE", "assets/audio/simple-sound.wav")
+        self.se = audio.Sound("OptionsSE", "assets/audio/menu-hover.wav")
         self.is_played_sound = False
 
     def set(self, game_mode, data):

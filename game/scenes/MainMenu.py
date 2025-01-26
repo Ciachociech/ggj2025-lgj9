@@ -32,7 +32,7 @@ class MainMenu(common.Scene):
         self.bonus_text = "Jak nazwiemy team to coś tu wstawimy"
 
         pygame.mixer.music.load("assets/audio/example.ogg")
-        self.se = audio.Sound("OptionsSE", "assets/audio/simple-sound.wav")
+        self.se = audio.Sound("OptionsSE", "assets/audio/menu-hover.wav")
         self.last_played_sound = -1
 
         self.resume()
