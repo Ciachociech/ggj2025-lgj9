@@ -29,7 +29,7 @@ class MainMenu(common.Scene):
         self.bonus_font = drawable.Font("MainMenuBonusFont")
         self.bonus_font.load_font_from_file("assets/fonts/NerkoOne-Regular.ttf", 20)
         self.title_text = "Tajemnicze bąbelki z kosmosu"
-        self.bonus_text = "Jak nazwiemy team to coś tu wstawimy"
+        self.bonus_text = "by Can'tCountTo3"
 
         pygame.mixer.music.load("assets/audio/example.ogg")
         self.se = audio.Sound("OptionsSE", "assets/audio/menu-hover.wav")

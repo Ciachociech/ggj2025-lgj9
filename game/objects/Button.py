@@ -16,7 +16,7 @@ class Button(common.Object):
         self.button_hover_highlight = drawable.Image("mainmenu-highlight", "assets/sprites/button_background_hover.png")
 
         self.font = drawable.Font("GameFont")
-        self.font.load_font_from_file("assets/fonts/Tektur-Regular.ttf", 48)
+        self.font.load_font_from_file("assets/fonts/Tektur-Regular.ttf", 40)
         self.button_text = text
 
     def update(self):
@@ -28,4 +28,4 @@ class Button(common.Object):
         if self.is_hovered:
             window.blit(self.button_hover_highlight.image, self.position)
         self.font.render_text(window, self.button_text, pygame.Color(255, 255, 255, 255),
-                              (self.position[0] + self.size[0] / 2, self.position[1] - 2 + self.size[1] / 2), "center")
+                              (self.position[0] + self.size[0] / 2, self.position[1] + self.size[1] / 2), "center")

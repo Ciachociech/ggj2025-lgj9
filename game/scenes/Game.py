@@ -58,8 +58,8 @@ class Game(common.Scene):
 
         self.font = drawable.Font("GameFont")
         self.font.load_font_from_file("assets/fonts/Tektur-Regular.ttf", 48)
-        self.score_text = "Wynik: "
-        self.time_text = "Czas: "
+        self.score_text = "wynik: "
+        self.time_text = "czas: "
 
         self.is_left_mouse_clicked = False
         self.is_right_mouse_clicked = False
@@ -259,8 +259,8 @@ class Game(common.Scene):
 
         if self.animal_chosen != -1:
             self.window.window.blit(self.cursor_image.image, self.cursor_image_rect)
-        self.font.render_text(self.window.window, self.score_text + str(self.score), pygame.Color(255, 255, 255, 255), (8, 8))
+        self.font.render_text(self.window.window, self.score_text + str(self.score), pygame.Color(255, 255, 255, 255), (32, 12))
         if (self.game_mode is GameMode.time_limit or self.game_mode is GameMode.mixed_limit) and self.timer.elapsed_time / 1000 < self.time_limit:
             self.font.render_text(self.window.window,
                                   self.time_text + "{:4.2f}".format(self.time_limit - self.timer.elapsed_time / 1000) + "s",
-                                  pygame.Color(255, 255, 255, 255), (8, 64))
+                                  pygame.Color(255, 255, 255, 255), (32, 72))
