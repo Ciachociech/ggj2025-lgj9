@@ -29,7 +29,8 @@ class Animal(common.Object):
 class Cow(Animal):
 
     def __init__(self, x_pos):
-        super().__init__("CowAnimalObject", 96, ("assets/sprites/cow.png", "assets/sprites/cow_hover.png"), x_pos)
+        super().__init__("CowAnimalObject", 96,
+                         ("assets/sprites/cow.png", "assets/sprites/cow_hover.png"), x_pos)
 
     def render(self, window, position = (0, 0)):
         super().render(window, position)
@@ -38,7 +39,8 @@ class Cow(Animal):
 class Chicken(Animal):
 
     def __init__(self, x_pos):
-        super().__init__("ChickenAnimalObject", 40, ("assets/sprites/chicken.png", "assets/sprites/chicken.png"), x_pos)
+        super().__init__("ChickenAnimalObject", 40,
+                         ("assets/sprites/chicken.png", "assets/sprites/chicken_hover.png"), x_pos)
 
     def render(self, window, position = (0, 0)):
         super().render(window, position)
@@ -47,7 +49,8 @@ class Chicken(Animal):
 class Fox(Animal):
 
     def __init__(self, x_pos):
-        super().__init__("FoxAnimalObject", 56, ("assets/sprites/fox.png", "assets/sprites/fox.png"), x_pos)
+        super().__init__("FoxAnimalObject", 56,
+                         ("assets/sprites/fox.png", "assets/sprites/fox_hover.png"), x_pos)
 
     def render(self, window, position = (0, 0)):
         super().render(window, position)
@@ -56,7 +59,8 @@ class Fox(Animal):
 class Deer(Animal):
 
     def __init__(self, x_pos):
-        super().__init__("DeerAnimalObject", 80, ("assets/sprites/deer.png", "assets/sprites/deer.png"), x_pos)
+        super().__init__("DeerAnimalObject", 80,
+                         ("assets/sprites/deer.png", "assets/sprites/deer_hover.png"), x_pos)
 
     def render(self, window, position = (0, 0)):
         super().render(window, position)
@@ -65,9 +69,11 @@ class Rabbit(Animal):
 
     def __init__(self, spawn_value, x_pos):
         if spawn_value < 90:
-            super().__init__("RabbitAnimalObject", 24, ("assets/sprites/rabbit.png", "assets/sprites/rabbit.png"), x_pos)
+            super().__init__("RabbitAnimalObject", 24,
+                             ("assets/sprites/rabbit.png", "assets/sprites/rabbit_hover.png"), x_pos)
         else:
-            super().__init__("RabbitAnimalObject", 24, ("assets/sprites/stefan.png", "assets/sprites/stefan.png"), x_pos)
+            super().__init__("RabbitAnimalObject", 24,
+                             ("assets/sprites/stefan.png", "assets/sprites/stefan_hover.png"), x_pos)
 
     def render(self, window, position=(0, 0)):
         super().render(window, position)
@@ -75,7 +81,8 @@ class Rabbit(Animal):
 class Zubr(Animal):
 
     def __init__(self, x_pos):
-        super().__init__("ZubrAnimalObject", 112, ("assets/sprites/zubr.png", "assets/sprites/zubr.png"), x_pos)
+        super().__init__("ZubrAnimalObject", 112,
+                         ("assets/sprites/zubr.png", "assets/sprites/zubr_hover.png"), x_pos)
 
     def render(self, window, position = (0, 0)):
         super().render(window, position)
