@@ -76,12 +76,12 @@ class Gameover(common.Scene):
         self.window.window.blit(semitransparent_rectangle, (0, 0))
 
         self.result_font.render_text(self.window.window, self.main_result_text, pygame.Color(255, 255, 0, 255),
-                              (640, 80), "center")
+                              (640, 208), "center")
         self.stats_font.render_text(self.window.window, self.score_text, pygame.Color(255, 255, 255, 255),
-                              (640, 200), "center")
+                              (640, 312), "center")
         if self.time_text is not None:
             self.stats_font.render_text(self.window.window, self.time_text, pygame.Color(255, 255, 255, 255),
-                                  (640, 288), "center")
+                                  (640, 392), "center")
 
         self.button.render(self.window.window)
         self.window.window.blit(self.cursor_image.image, self.cursor_image_rect)

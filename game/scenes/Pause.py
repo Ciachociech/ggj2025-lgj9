@@ -76,6 +76,6 @@ class Pause(common.Scene):
         for button in self.buttons:
             button.render(self.window.window)
         self.font.render_text(self.window.window, self.text, pygame.Color(255, 255, 255, 255),
-                              (640, 80), "center")
+                              (640, 250), "center")
 
         self.window.window.blit(self.cursor_image.image, self.cursor_image_rect)
