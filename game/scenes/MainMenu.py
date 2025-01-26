@@ -1,5 +1,6 @@
 import pygame
 
+import audio.Sound
 import common.Scene
 import drawable.Image
 import game.objects.Background
@@ -30,12 +31,18 @@ class MainMenu(common.Scene):
         self.title_text = "Tajemnicze bąbelki z kosmosu"
         self.bonus_text = "Jak nazwiemy team to coś tu wstawimy"
 
+        pygame.mixer.music.load("assets/audio/example.ogg")
+        self.se = audio.Sound("OptionsSE", "assets/audio/simple-sound.wav")
+        self.last_played_sound = -1
+
         self.resume()
 
     def resume(self):
         pygame.mouse.set_visible(False)
         self.is_left_mouse_clicked = False
         self.mouse_click_cooldown = 0
+        self.last_played_sound = -1
+        pygame.mixer.music.play()
 
     def process_input(self, keyboard_input, joystick, mouse_input, mouse_position):
         self.cursor_image_rect.center = pygame.mouse.get_pos()
@@ -45,12 +52,20 @@ class MainMenu(common.Scene):
     def update(self):
         self.mouse_click_cooldown += 1
 
+        is_any_hover = False
         for it in range(0, len(self.buttons)):
             self.buttons[it].update()
             if self.buttons[it].rect.collidepoint(self.cursor_image_rect.center):
                 self.buttons[it].is_hovered = True
+                is_any_hover = True
+                if self.last_played_sound != it:
+                    self.last_played_sound = it
+                    self.se.sound.play()
                 if self.is_left_mouse_clicked:
                     return it
+
+        if not is_any_hover:
+            self.last_played_sound = -1
         return None
 
     def render(self, color = pygame.Color(255, 255, 255, 255)):

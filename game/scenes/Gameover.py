@@ -1,5 +1,6 @@
 import pygame
 
+import audio.Sound
 import common.Scene
 import drawable.Image
 import game.objects.Button
@@ -24,9 +25,13 @@ class Gameover(common.Scene):
         self.score_text = None
         self.time_text = None
 
+        self.se = audio.Sound("OptionsSE", "assets/audio/simple-sound.wav")
+        self.is_played_sound = False
+
     def set(self, game_mode, data):
         pygame.mouse.set_visible(False)
         self.is_left_mouse_clicked = False
+        self.is_played_sound = False
 
         self.score_text = "wynik: "
         self.time_text = None
@@ -49,10 +54,19 @@ class Gameover(common.Scene):
 
     def update(self):
         self.button.update()
+
+        is_any_hover = False
         if self.button.rect.collidepoint(self.cursor_image_rect.center):
-                self.button.is_hovered = True
-                if self.is_left_mouse_clicked:
-                    return True
+            self.button.is_hovered = True
+            is_any_hover = True
+            if not self.is_played_sound:
+                self.is_played_sound = True
+                self.se.sound.play()
+            if self.is_left_mouse_clicked:
+                return True
+
+        if not is_any_hover:
+            self.is_played_sound = False
         return False
 
     def render(self, color = pygame.Color(255, 255, 255, 255)):
