@@ -45,8 +45,8 @@ class Game(common.Scene):
     def __init__(self, window):
         super().__init__("GameMainScene", window)
 
-        self.frames_per_beginning = 0
-        self.score = 0
+        self.frames_per_beginning = None
+        self.score = None
 
         self.background = game.objects.Background("assets/sprites/background.png")
         self.ufo = game.objects.Ufo()
@@ -63,8 +63,8 @@ class Game(common.Scene):
 
         self.is_left_mouse_clicked = False
         self.is_right_mouse_clicked = False
-        self.animal_chosen = -1
-        self.mouse_click_cooldown = 0
+        self.animal_chosen = None
+        self.mouse_click_cooldown = None
         self.cursor_image = None
         self.cursor_image_rect = pygame.Rect(0, 0, 0, 0)
 
@@ -77,10 +77,14 @@ class Game(common.Scene):
         self.animals_left = -1
 
     def set(self, game_mode):
+        self.frames_per_beginning = 0
+        self.score = 0
         self.bubbles = []
         self.animals = []
         self.game_mode = game_mode
         self.timer.restart()
+        self.animal_chosen = -1
+        self.mouse_click_cooldown = 0
 
         match self.game_mode:
             case GameMode.no_limit:
@@ -160,7 +164,7 @@ class Game(common.Scene):
             if pygame.Rect(bubble.center[0] - bubble.radius, bubble.center[1] - bubble.radius, 2 * bubble.radius, 2 * bubble.radius).collidepoint(self.cursor_image_rect.center):
                 if self.animal_chosen != -1 and bubble.radius > 2 * self.animals[self.animal_chosen].size / math.sqrt(2):
                     bubble.is_bubble_hovered = True
-                    if self.is_left_mouse_clicked:
+                    if self.is_left_mouse_clicked and not bubble.prepare_to_delete:
                         for it in range(self.animal_chosen, len(self.animals)):
                             self.animals[it].update_position()
                         self.score += calculate_score(self.animals[self.animal_chosen].size)
