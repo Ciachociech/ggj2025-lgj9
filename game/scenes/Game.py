@@ -194,11 +194,15 @@ class Game(common.Scene):
             self.animal_chosen = -1
             self.se.sound.play()
         for it in range (0, len(self.animals)):
-            if self.animals[it].rect.collidepoint(pygame.mouse.get_pos()) and self.is_left_mouse_clicked:
-                self.animal_chosen = it
-                self.cursor_image = self.animals[it].img
-                self.cursor_image_rect = self.cursor_image.image.get_rect()
-                self.se.sound.play()
+            self.animals[it].update()
+            if self.animals[it].rect.collidepoint(pygame.mouse.get_pos()):
+                if self.animal_chosen != it:
+                    self.animals[it].is_hovered = True
+                if self.is_left_mouse_clicked:
+                    self.animal_chosen = it
+                    self.cursor_image = self.animals[it].img
+                    self.cursor_image_rect = self.cursor_image.image.get_rect()
+                    self.se.sound.play()
 
         # increment other variables
         self.frames_per_beginning += 1
